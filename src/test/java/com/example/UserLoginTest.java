@@ -51,7 +51,7 @@ public class UserLoginTest {
      */
     @Test
     public void loginSuccessful() throws IOException, InterruptedException {
-    	String json = "{\"accountId\":0,\"username\":\"testuser1\",\"password\":\"password\"}";
+    	String json = "{\"accountId\":9999,\"username\":\"testuser1\",\"password\":\"password\"}";
         HttpRequest postRequest = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/login"))
                 .POST(HttpRequest.BodyPublishers.ofString(json))

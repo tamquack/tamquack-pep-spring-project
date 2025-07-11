@@ -54,7 +54,7 @@ public class MessageService{
     public List<Message> getMessagesByUser(Integer id){
          List<Message> messages = new ArrayList<>();
         for (Message message : messageRepository.findAll()) {
-            if (message.getPostedBy() == id) {
+            if (message.getPostedBy().equals(id)) {
                 messages.add(message);
             }
         }

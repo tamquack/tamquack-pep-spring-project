@@ -5,7 +5,6 @@ import com.example.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import javax.naming.AuthenticationException; 
 
 
@@ -32,13 +31,18 @@ public class AccountService {
     }
     
     public Account login(String username, String password) throws AuthenticationException {
-        List<Account> accounts = accountRepository.findAll();
-        for (Account acc : accounts) {
-            if (acc.getUsername().equals(username) && acc.getPassword().equals(password)) {
-                int acc_id = acc.getAccountId();
-                return new Account (acc_id, username, password);
+    //     List<Account> accounts = accountRepository.findAll();
+    //     for (Account acc : accounts) {
+    //         if (acc.getUsername().equals(username) && acc.getPassword().equals(password)) {
+    //             return accountRepository.accountLogin(username, password);
+    //         }
+    //     }
+    //     throw new AuthenticationException("Invalid username or password");
+    // }
+            Account account = accountRepository.accountLogin(username, password);
+            if (account == null) {
+                throw new AuthenticationException("Invalid username or password");
             }
-        }
-        throw new AuthenticationException("Invalid username or password");
+            return account;
     }
 }

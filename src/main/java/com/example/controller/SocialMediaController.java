@@ -40,34 +40,32 @@ public class SocialMediaController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody Account account) {
+    public ResponseEntity<Account> register(@RequestBody Account account) {
         try {
             accountService.register(account);
             return ResponseEntity.ok(account);
         }catch (Exception e){ 
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }      
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Account account) throws AuthenticationException {
+    public ResponseEntity<Account> login(@RequestBody Account account) throws AuthenticationException {
         try {
-            accountService.login(account.getUsername(), account.getPassword());
-            return ResponseEntity.ok(account);
+            Account loginAccount = accountService.login(account.getUsername(), account.getPassword());
+            return ResponseEntity.ok(loginAccount);
         } catch (AuthenticationException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        } 
     }
 
     @PostMapping("/messages")
-    public ResponseEntity<?> createMessage(@RequestBody Message message) {
+    public ResponseEntity<Message> createMessage(@RequestBody Message message) {
         try {
             messageService.createMessage(message);
             return ResponseEntity.ok(message);
          } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().build();
          }
         }
 
@@ -103,8 +101,9 @@ public class SocialMediaController {
     @PatchMapping("/messages/{messageId}")
     public ResponseEntity<Integer> updateMessage(@RequestBody Message newContent, @PathVariable Integer messageId) {
         try{
-              if (messageService.getMessageById(messageId) == null || 
-              newContent.getMessageText().length() > 255 || newContent.getMessageText().isEmpty()) {
+            if(messageService.getMessageById(messageId) == null || 
+              newContent.getMessageText().length() > 255 || 
+              newContent.getMessageText().isEmpty()) {
                 return ResponseEntity.badRequest().build();
               }
             messageService.updateMessage(newContent, messageId);

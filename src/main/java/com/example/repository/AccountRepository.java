@@ -9,7 +9,10 @@ import org.springframework.data.jpa.repository.Query;
 public interface AccountRepository extends JpaRepository<Account, Integer> {
 
     @Query("SELECT acc.username FROM Account acc WHERE acc.username = ?1")
-    Account findByUsername(String username);
+    String findByUsername(String username);
+
+    @Query("SELECT acc FROM Account acc WHERE acc.username = ?1 AND acc.password = ?2")
+    Account accountLogin(String username, String password);
     
 }
 
